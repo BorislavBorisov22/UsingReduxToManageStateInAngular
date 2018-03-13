@@ -1,6 +1,5 @@
 import { InMemoryDbService, createErrorResponse, HttpMethodInterceptorArgs, createObservableResponse } from 'angular-in-memory-web-api';
 
-
 export class InMemoryStoryService implements InMemoryDbService {
   // uncomment this function to force an error
   // protected get(interceptorArgs: HttpMethodInterceptorArgs) {
@@ -25,7 +24,7 @@ export class InMemoryStoryService implements InMemoryDbService {
         "topic": "AngularJS"
       },
       {
-        "id":3,
+        "id": 3,
         "name": "Building Apps with Angular and Redux",
         "topic": "Angular and Redux"
       }
