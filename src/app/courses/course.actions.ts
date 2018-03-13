@@ -9,6 +9,7 @@ export const FILTER_COURSES = 'courses/FILTER';
 export const REQUEST_COURSES_SUCCESS = 'courses/REQUEST_COURSES_SUCCESS';
 export const ADD_COURSE_SUCCESS = 'courses/ADD_COURSE_SUCCESS';
 export const UPDATE_COURSE_SUCCESS = 'courses/UPDATE_COURSE_SUCCESS';
+export const DELETE_COURSE_SUCCESS = 'courses/DELETE_COURSE_SUCCESS';
 
 @Injectable()
 export class CourseActions {
@@ -52,5 +53,15 @@ export class CourseActions {
           course,
         });
       })
+  }
+
+  deleteCourse(course: Course): Observable<void> {
+    return this.courseService.deleteCourse(course)
+      .do(() => {
+        this.ngRedux.dispatch({
+          type: DELETE_COURSE_SUCCESS,
+          course
+        });
+      });
   }
 }

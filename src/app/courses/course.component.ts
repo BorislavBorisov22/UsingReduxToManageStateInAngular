@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { CourseActions } from './course.actions';
 import { Component, OnInit, Input, AfterContentChecked } from '@angular/core';
 import { CourseService } from './course.service';
@@ -5,16 +6,17 @@ import { Course } from './course';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../blocks/toast';
 import { ModalService } from '../blocks/modal';
-
+import { select } from 'ng2-redux';
 @Component({
   templateUrl: './course.component.html',
 })
 export class CourseComponent implements OnInit, AfterContentChecked {
+  @select('courses') courses: Observable<Course[]>;
+
   @Input() course: Course;
   editCourse: Course = <Course>{};
 
   constructor(
-    private _courseService: CourseService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _toastService: ToastService,
@@ -31,8 +33,11 @@ export class CourseComponent implements OnInit, AfterContentChecked {
       this.editCourse = this.course;
       return;
     }
-    this._courseService.getCourse(id)
-      .subscribe(course => this._setEditCourse(course));
+
+    this.courses.subscribe(courses => {
+      const targetCourse = courses.find(c => c.id === id);
+      this._setEditCourse(targetCourse);
+    });
   }
 
   private _setEditCourse(course: Course) {
@@ -83,7 +88,7 @@ export class CourseComponent implements OnInit, AfterContentChecked {
     this._modalService.activate(msg).then(responseOK => {
       if (responseOK) {
         this.cancel(false);
-        this._courseService.deleteCourse(this.course)
+        this.courseActions.deleteCourse(this.course)
           .subscribe(() => {
             this._toastService.activate(`Deleted ${this.course.name}`);
             this._gotoCourses();
@@ -96,7 +101,6 @@ export class CourseComponent implements OnInit, AfterContentChecked {
     this._router.navigate(['courses']);
   }
 
-
   ngOnInit() {
     this._getCourse();
   }
@@ -104,5 +108,4 @@ export class CourseComponent implements OnInit, AfterContentChecked {
   ngAfterContentChecked() {
     componentHandler.upgradeDom();
   }
-
 }

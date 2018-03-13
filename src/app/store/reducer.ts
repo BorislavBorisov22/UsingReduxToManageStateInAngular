@@ -1,4 +1,4 @@
-import { ADD_COURSE_SUCCESS, UPDATE_COURSE_SUCCESS } from './../courses/course.actions';
+import { ADD_COURSE_SUCCESS, UPDATE_COURSE_SUCCESS, DELETE_COURSE_SUCCESS } from './../courses/course.actions';
 import { IAppState } from './IAppState';
 import { FILTER_COURSES, REQUEST_COURSES_SUCCESS } from '../courses/course.actions';
 
@@ -48,6 +48,14 @@ function updateCourse(state: IAppState, action): IAppState {
   });
 }
 
+function deleteCourse(state: IAppState, action): IAppState {
+  const newCourses = state.courses.filter(c => c.id !== action.course.id);
+
+  return Object.assign({}, state, {
+    courses: newCourses,
+    filteredCourses: newCourses
+  });
+}
 export function reducer(state = initialState, action) {
   switch (action.type) {
     case FILTER_COURSES:
@@ -58,6 +66,8 @@ export function reducer(state = initialState, action) {
       return addCourse(state, action);
     case UPDATE_COURSE_SUCCESS:
       return updateCourse(state, action);
+    case DELETE_COURSE_SUCCESS:
+      return deleteCourse(state, action);
     default:
       return state;
   }
