@@ -1,8 +1,8 @@
-import { store } from './../store';
+import { store, filterCourses } from './../store';
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from './course.service';
 import { Course } from './course';
-import { FilterTextComponent, FilterService } from '../blocks/filter-text';
+import { FilterTextComponent } from '../blocks/filter-text';
 
 @Component({
   selector: 'app-course-list',
@@ -10,21 +10,18 @@ import { FilterTextComponent, FilterService } from '../blocks/filter-text';
   styleUrls: ['./course-list.component.css']
 })
 export class CourseListComponent implements OnInit {
-  courses: Course[];
-  filteredCourses = this.courses;
+  filteredCourses: Course[] = [];
 
-  constructor(private _courseService: CourseService, private _filterService: FilterService) {
+  constructor(private _courseService: CourseService) {
   }
 
   filterChanged(searchText: string) {
     console.log('user searched: ', searchText);
-    this.filteredCourses = this._filterService.filter(searchText, ['id', 'name', 'topic'], this.courses);
+    store.dispatch(filterCourses(searchText));
   }
 
   updateFromState() {
-    const allState = store.getState();
-    this.courses = allState.courses;
-    this.filteredCourses = allState.courses;
+    this.filteredCourses = store.getState().filteredCourses;
   }
 
   ngOnInit() {
@@ -32,6 +29,7 @@ export class CourseListComponent implements OnInit {
     store.subscribe(() => {
       this.updateFromState();
     });
+
     componentHandler.upgradeDom();
   }
 }

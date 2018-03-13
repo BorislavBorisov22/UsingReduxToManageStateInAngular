@@ -24,10 +24,11 @@ const initialState: IAppState = {
   filteredCourses: courses
 }
 
-function filterCourses(state, action): IAppState {
+function filterCourses(state: IAppState, action): IAppState {
+  const filteredCourses = state.courses.filter(c => c.name.toLowerCase().includes(action.searchText.toLowerCase()));
+
   return Object.assign({}, state, {
-    filteredCourses: state.courses
-      .filter(c => c.name.toLowerCase().indexOf(action.searchText.toLowerCase()))
+    filteredCourses
   });
 }
 
