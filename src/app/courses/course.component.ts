@@ -1,3 +1,4 @@
+import { CourseActions } from './course.actions';
 import { Component, OnInit, Input, AfterContentChecked } from '@angular/core';
 import { CourseService } from './course.service';
 import { Course } from './course';
@@ -17,7 +18,8 @@ export class CourseComponent implements OnInit, AfterContentChecked {
     private _route: ActivatedRoute,
     private _router: Router,
     private _toastService: ToastService,
-    private _modalService: ModalService
+    private _modalService: ModalService,
+    private courseActions: CourseActions
   ) { }
 
   private _getCourse() {
@@ -59,15 +61,17 @@ export class CourseComponent implements OnInit, AfterContentChecked {
   save() {
     let course = this.course;
     if (course.id == null) {
-      this._courseService.addCourse(this.editCourse)
-        .subscribe(char => {
+      this.courseActions.addCourse(this.editCourse)
+        .subscribe((char) => {
           this._setEditCourse(char);
           this._toastService.activate(`Successfully added ${char.name}`);
           this._gotoCourses();
         });
+
       return;
     }
-    this._courseService.updateCourse(this.editCourse)
+
+    this.courseActions.updateCourse(this.editCourse)
       .subscribe(() => {
         this._toastService.activate(`Successfully saved ${course.name}`);
         this._gotoCourses();

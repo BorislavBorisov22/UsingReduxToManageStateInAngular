@@ -23,7 +23,7 @@ export class CourseListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.courseActions.getCourses();
+    // this.courseActions.getCourses();
     componentHandler.upgradeDom();
   }
 }
