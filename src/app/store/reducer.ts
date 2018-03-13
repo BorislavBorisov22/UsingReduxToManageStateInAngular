@@ -1,5 +1,5 @@
-import { FILTER_COURSES } from './actions';
 import { IAppState } from './IAppState';
+import { FILTER_COURSES } from '../courses/course.actions';
 
 const courses = [
   {
