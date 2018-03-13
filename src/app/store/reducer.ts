@@ -7,7 +7,9 @@ const initialState: IAppState = {
 };
 
 function filterCourses(state: IAppState, action): IAppState {
-  const filteredCourses = state.courses.filter(c => c.name.toLowerCase().includes(action.searchText.toLowerCase()));
+  const filteredCourses = state.courses.filter(c => {
+    return c.name.toLowerCase().includes(action.searchText.toLowerCase())
+  });
 
   return Object.assign({}, state, {
     filteredCourses
