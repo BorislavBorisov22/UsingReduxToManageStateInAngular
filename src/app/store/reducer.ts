@@ -1,3 +1,4 @@
+import { FILTER_COURSES } from './actions';
 import { IAppState } from './IAppState';
 
 const initialState: IAppState = {
@@ -21,5 +22,10 @@ const initialState: IAppState = {
 };
 
 export function reducer(state = initialState, action) {
-  return state;
+  switch (action.type) {
+    case FILTER_COURSES:
+      break;
+    default:
+      return state;
+  }
 }
